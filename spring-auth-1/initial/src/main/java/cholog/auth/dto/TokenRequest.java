@@ -1,6 +1,6 @@
 package cholog.auth.dto;
 
-public class TokenRequest {
+public class TokenRequest { // dto 역학
     private String email;
     private String password;
 

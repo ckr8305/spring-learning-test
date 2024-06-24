@@ -34,7 +34,7 @@ class AuthTest {
                 .given().log().all()
                 .auth().preemptive().basic(EMAIL, PASSWORD)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/members/me/basic")
+                .when().get("/members/me/basic") // basic 컨트롤러에 요청
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value()).extract().as(MemberResponse.class);
 

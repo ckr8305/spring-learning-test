@@ -31,10 +31,10 @@ public class AuthService {
     }
 
     public TokenResponse createToken(TokenRequest tokenRequest) {
-        if (checkInvalidLogin(tokenRequest.getEmail(), tokenRequest.getPassword())) {
+        if (checkInvalidLogin(tokenRequest.getEmail(), tokenRequest.getPassword())) { // 유효성 검사
             throw new AuthorizationException();
         }
-
+        // 통과하면!
         String accessToken = jwtTokenProvider.createToken(tokenRequest.getEmail());
         return new TokenResponse(accessToken);
     }

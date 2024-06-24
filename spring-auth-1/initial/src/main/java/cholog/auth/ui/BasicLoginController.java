@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class BasicLoginController {
     private final AuthService authService;
-    private final AuthorizationExtractor<AuthInfo> authorizationExtractor;
+    private final AuthorizationExtractor<AuthInfo> authorizationExtractor; // 얘 사용? - 구현체를 베이직으로
 
     public BasicLoginController(AuthService authService) {
         this.authService = authService;
-        this.authorizationExtractor = new BasicAuthorizationExtractor();
+        this.authorizationExtractor = new BasicAuthorizationExtractor(); // 베이직
     }
 
     /**
@@ -28,17 +28,24 @@ public class BasicLoginController {
      * authorization: Basic ZW1haWxAZW1haWwuY29tOjEyMzQ=
      * accept: application/json
      */
-    @GetMapping("/members/me/basic")
+    @GetMapping("/members/me/basic") // test에 있던 거
     public ResponseEntity<MemberResponse> findMyInfo(HttpServletRequest request) {
         // TODO: authorization 헤더의 Basic 값에 있는 email과 password 추출 (hint: authorizationExtractor 사용)
-        String email = "";
-        String password = "";
 
-        if (authService.checkInvalidLogin(email, password)) {
+        // 수정
+        AuthInfo authInfo = authorizationExtractor.extract(request); // 이메일, 비밀번호 가져옴
+
+        //수정
+        String email = authInfo.getEmail();
+        String password = authInfo.getPassword();
+
+
+        if (authService.checkInvalidLogin(email, password)) { // 로그인 유효한지 확인(DB에 있는 사용자인지 확인)
             throw new AuthorizationException();
         }
 
-        MemberResponse member = authService.findMember(email);
+        // 정상
+        MemberResponse member = authService.findMember(email); // 이메일을 통해 멤버 조회
         return ResponseEntity.ok().body(member);
     }
 }

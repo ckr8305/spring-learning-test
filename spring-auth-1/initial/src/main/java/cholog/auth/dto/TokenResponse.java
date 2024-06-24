@@ -1,6 +1,6 @@
 package cholog.auth.dto;
 
-public class TokenResponse {
+public class TokenResponse { // dto
     private String accessToken;
 
     public TokenResponse() {

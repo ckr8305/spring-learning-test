@@ -36,14 +36,21 @@ public class SessionLoginController {
     @PostMapping("/login/session")
     public ResponseEntity<Void> sessionLogin(HttpServletRequest request, HttpSession session) {
         // TODO: HttpRequest로 받은 email과 password 추출
-        String email = "";
-        String password = "";
+
+        // 수정
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
         if (authService.checkInvalidLogin(email, password)) {
             throw new AuthorizationException();
         }
+        // session: 서버에 암호실
+        // : 클라이언트에서 서버로 데이터 보내주면 쿠키에 데이터 넣고 그 데이터 서버로 넘겨주면 session에 저장. -> session 아이디만 알려줌
 
         // TODO: Session에 인증 정보 저장 (key: SESSION_KEY, value: email값)
+
+        // 수정
+        session.setAttribute(SESSION_KEY, email);
 
         return ResponseEntity.ok().build();
     }
@@ -58,7 +65,9 @@ public class SessionLoginController {
     @GetMapping("/members/me/session")
     public ResponseEntity<MemberResponse> findMyInfo(HttpSession session) {
         // TODO: Session을 통해 인증 정보 조회 (key: SESSION_KEY)
-        String email = "";
+
+        // 수정
+        String email = session.getAttribute(SESSION_KEY).toString(); // SESSION_KEY: Object 타입이니까 형변횐
         MemberResponse member = authService.findMember(email);
         return ResponseEntity.ok().body(member);
     }

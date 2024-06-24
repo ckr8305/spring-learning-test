@@ -1,6 +1,6 @@
 package cholog.auth.dto;
 
-public class AuthInfo {
+public class AuthInfo { // 얘는 하나의 dto
     private String email;
     private String password;
 
